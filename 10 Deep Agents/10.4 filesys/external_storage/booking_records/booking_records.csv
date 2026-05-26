@@ -1,0 +1,3 @@
+source,destination,flight_id,airline,time,price,name,phone,payment_status,booking_status
+Bangalore,Delhi,AI101,Air India,10:30 AM,₹5200,p,123,PAID,CONFIRMED
+Bangalore,Delhi,UK303,Vistara,8:00 PM,₹7200,poorab,1234,PAID,CONFIRMED

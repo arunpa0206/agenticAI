@@ -1,0 +1,16 @@
+{
+    "current_step": "PLAN_GENERATED",
+    "travel_plan": {
+        "source": "Bangalore",
+        "destination": "Delhi",
+        "flight_id": "UK303",
+        "airline": "Vistara",
+        "time": "8:00 PM",
+        "price": "\u20b97200"
+    },
+    "customer": {
+        "name": "poorab",
+        "phone": "1234"
+    },
+    "payment_status": "PAID"
+}

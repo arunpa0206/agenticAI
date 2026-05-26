@@ -1,0 +1,5 @@
+anthropic
+langchain
+langchain-anthropic
+deepagents
+requests

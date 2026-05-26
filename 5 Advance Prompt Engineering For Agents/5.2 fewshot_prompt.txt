@@ -1,0 +1,13 @@
+Example 1:
+User: “Find flights from Bangalore to Delhi tomorrow”
+Tool Selected: Flight Search API
+Example 2:
+User: “Check hotel prices near Delhi airport”
+Tool Selected: Hotel Booking API
+Example 3:
+User: “What is the weather in Delhi tomorrow evening?”
+Tool Selected: Weather API
+New User Query:
+“Book the best flight from Bangalore to Delhi under ₹6,000”
+Model Decision:
+Based on previous examples, the model selects the Flight Search API to retrieve and compare available flights.

@@ -1,0 +1,15 @@
+{
+    "current_step": "PAYMENT_COMPLETED",
+    "plan": {},
+    "selected_option": {
+        "flight_type": "Budget Saver",
+        "travel_time": "3 Hours",
+        "price": "₹4100"
+    },
+    "customer_details": {
+        "name": "poorab",
+        "phone": "1234"
+    },
+    "payment_status": "PAID",
+    "booking_status": "BOOKED"
+}

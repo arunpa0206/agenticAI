@@ -1,0 +1,11 @@
+The Prompt:
+Instruction: Classify the sentiment of the customer review and identify the mentioned product. Return the result in JSON format.
+Example: Review: "I absolutely love the noise cancellation on my new Sony headphones, but the battery life is just okay." Output: {"sentiment": "positive", "product": "Sony headphones", "limitations": ["battery life"]}
+Task: Review: "The Dell monitor arrived with a cracked screen and the colors look washed out even after calibration." Output:
+The Model's Output (Expected):
+JSON
+{
+  "sentiment": "negative",
+  "product": "Dell monitor",
+  "limitations": ["cracked screen", "color accuracy"]
+}

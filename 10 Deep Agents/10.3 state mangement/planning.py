@@ -1,0 +1,214 @@
+from deepagents import (
+    create_deep_agent
+)
+
+from langchain_anthropic import (
+    ChatAnthropic
+)
+
+from tools import (
+
+    generate_flight_plan,
+
+    booking_workflow,
+
+    payment_workflow,
+
+    notification_workflow
+)
+
+
+# ==================================================
+# MODEL
+# ==================================================
+
+model = ChatAnthropic(
+
+    model=
+    "claude-sonnet-4-20250514",
+
+    api_key="YOUR_API_KEY"
+)
+
+
+# ==================================================
+# DEEP AGENT
+# ==================================================
+
+agent = create_deep_agent(
+
+    model=model,
+
+    tools=[
+
+        generate_flight_plan,
+
+        booking_workflow,
+
+        payment_workflow,
+
+        notification_workflow
+    ],
+
+    system_prompt="""
+
+You are a Flight Deep Agent.
+
+Rules:
+
+1. If user asks for flight:
+
+   call:
+
+   generate_flight_plan()
+
+2. If user says:
+
+   "another flight"
+   "show another"
+   "next flight"
+   "different flight"
+   "generate another flight"
+
+   call:
+
+   generate_flight_plan()
+
+   and replace previous flight
+
+3. If user says:
+
+   "book another flight"
+   "book different flight"
+   "change booking"
+
+   generate new flight
+   and restart booking flow
+
+4. If user wants booking:
+
+   collect:
+
+   customer_name
+   phone
+
+   then call:
+
+   booking_workflow(
+      customer_name,
+      phone
+   )
+
+5. Ask for payment
+   confirmation
+
+6. If payment confirmed:
+
+   payment_workflow(
+      payment_confirmed=True
+   )
+
+7. After payment:
+
+   notification_workflow()
+
+8. Continue workflow
+   using previous state
+
+"""
+)
+
+
+# ==================================================
+# AGENT FUNCTION
+# ==================================================
+
+def run_agent():
+
+    conversation = []
+
+    while True:
+
+        # Get user input
+        query = input(
+            "\nYou: "
+        )
+
+
+        # Exit application
+        if query.lower() in [
+
+            "exit",
+            "quit"
+
+        ]:
+
+            print(
+                "\nGoodbye!"
+            )
+
+            break
+
+
+        # Store user message
+        conversation.append(
+
+            {
+
+                "role":
+                "user",
+
+                "content":
+                query
+
+            }
+
+        )
+
+
+        # Send conversation to agent
+        response = agent.invoke(
+
+            {
+
+                "messages":
+                conversation
+
+            }
+
+        )
+
+
+        final_message = (
+
+            response[
+                "messages"
+            ][-1]
+
+        )
+
+
+        print(
+            "\nAgent:\n"
+        )
+
+
+        print(
+            final_message.content
+        )
+
+
+        # Store assistant reply
+        conversation.append(
+
+            {
+
+                "role":
+                "assistant",
+
+                "content":
+                final_message.content
+
+            }
+
+        )

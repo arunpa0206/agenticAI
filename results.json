@@ -1,0 +1,102 @@
+[
+    {
+        "project": "1 intro to agentic AI",
+        "status": "PASS",
+        "error": ""
+    },
+    {
+        "project": "2 Deep dive into langchain",
+        "status": "PASS",
+        "error": ""
+    },
+    {
+        "project": "3 deepdive into langgraph",
+        "status": "PASS",
+        "error": ""
+    },
+    {
+        "project": "4 LangChain+LangGraph",
+        "status": "PASS",
+        "error": ""
+    },
+    {
+        "project": "6 Integrating Diverse And Complex Tools",
+        "status": "PASS",
+        "error": ""
+    },
+    {
+        "project": "8 Agent Testing and Debugging\\8.1 unit testing",
+        "status": "PASS",
+        "error": ""
+    },
+    {
+        "project": "8 Agent Testing and Debugging\\8.2 integration testing",
+        "status": "PASS",
+        "error": ""
+    },
+    {
+        "project": "8 Agent Testing and Debugging\\8.3 ab testing",
+        "status": "PASS",
+        "error": ""
+    },
+    {
+        "project": "9 Agent Evaluation Metrics and Frameworks",
+        "status": "PASS",
+        "error": ""
+    },
+    {
+        "project": "10 Deep Agents\\10.1 plannin tool",
+        "status": "PASS",
+        "error": ""
+    },
+    {
+        "project": "10 Deep Agents\\10.10 evaluate",
+        "status": "PASS",
+        "error": ""
+    },
+    {
+        "project": "10 Deep Agents\\10.11 human",
+        "status": "PASS",
+        "error": ""
+    },
+    {
+        "project": "10 Deep Agents\\10.2 taskdecomp",
+        "status": "PASS",
+        "error": ""
+    },
+    {
+        "project": "10 Deep Agents\\10.3 state mangement",
+        "status": "PASS",
+        "error": ""
+    },
+    {
+        "project": "10 Deep Agents\\10.4 filesys",
+        "status": "PASS",
+        "error": ""
+    },
+    {
+        "project": "10 Deep Agents\\10.5orch",
+        "status": "PASS",
+        "error": ""
+    },
+    {
+        "project": "10 Deep Agents\\10.6 context",
+        "status": "PASS",
+        "error": ""
+    },
+    {
+        "project": "10 Deep Agents\\10.7 tools",
+        "status": "PASS",
+        "error": ""
+    },
+    {
+        "project": "10 Deep Agents\\10.8 error",
+        "status": "PASS",
+        "error": ""
+    },
+    {
+        "project": "10 Deep Agents\\10.9 parllel",
+        "status": "PASS",
+        "error": ""
+    }
+]

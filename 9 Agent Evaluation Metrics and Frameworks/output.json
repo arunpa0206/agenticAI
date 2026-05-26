@@ -1,0 +1,46 @@
+[
+    {
+        "id": 1,
+        "intent": "flight_search",
+        "metrics": {
+            "success_rate": {
+                "value": 5.0,
+                "status": "FAIL"
+            },
+            "tool_accuracy": {
+                "value": 90.0,
+                "status": "PASS"
+            },
+            "average_steps": {
+                "value": 0.9,
+                "status": "PASS"
+            },
+            "policy_compliance": {
+                "value": 100.0,
+                "status": "PASS"
+            }
+        }
+    },
+    {
+        "id": 2,
+        "intent": "flight_booking",
+        "metrics": {
+            "success_rate": {
+                "value": 7.5,
+                "status": "FAIL"
+            },
+            "tool_accuracy": {
+                "value": 48.75,
+                "status": "FAIL"
+            },
+            "average_steps": {
+                "value": 1.52,
+                "status": "PASS"
+            },
+            "policy_compliance": {
+                "value": 72.5,
+                "status": "FAIL"
+            }
+        }
+    }
+]
