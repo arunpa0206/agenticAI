@@ -1,12 +1,17 @@
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+if not os.getenv("ANTHROPIC_API_KEY"):
+    raise ValueError("Required environment variable ANTHROPIC_API_KEY is missing. Please set it in your .env file.")
+
 from anthropic import Anthropic
 import json
 
 
-API_KEY = "YOUR_API_KEY"
 
-client = Anthropic(
-    api_key=API_KEY
-)
+
+client = Anthropic(api_key=os.getenv("ANTHROPIC_API_KEY"))
 
 
 def chatbot_response(user_input):
@@ -30,7 +35,7 @@ No extra text.
 
     response = client.messages.create(
 
-        model="claude-sonnet-4-0",
+        model="claude-sonnet-5",
 
         max_tokens=200,
 
@@ -45,7 +50,7 @@ No extra text.
     )
 
 
-    output = response.content[0].text.strip()
+    output = next(block for block in response.content if block.type == "text").text.strip()
 
 
     # Remove accidental markdown blocks

@@ -1,4 +1,11 @@
 import json
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+if not os.getenv("ANTHROPIC_API_KEY"):
+    raise ValueError("Required environment variable ANTHROPIC_API_KEY is missing. Please set it in your .env file.")
+
 from anthropic import Anthropic
 from mcp.client.stdio import (
     stdio_client,
@@ -11,9 +18,7 @@ from mcp import ClientSession
 # CLAUDE CLIENT
 # ============================================================
 
-client = Anthropic(
-    api_key=""
-)
+client = Anthropic(api_key=os.getenv("ANTHROPIC_API_KEY"))
 
 
 # ============================================================
@@ -122,7 +127,7 @@ async def run_flight_planner():
             response = client.messages.create(
 
                 model=
-                "claude-sonnet-4-20250514",
+                "claude-sonnet-5",
 
                 max_tokens=
                 1000,
@@ -183,7 +188,7 @@ async def run_flight_planner():
 
                         flight_data = json.loads(
 
-                            result.content[0].text
+                            next(block for block in result.content if block.type == "text").text
 
                         )
 
@@ -243,8 +248,6 @@ Status        : {flight_data["status"]}
 
                         print(
 
-                            notification_result
-                            .content[0]
-                            .text
+                            next(block for block in notification_result.content if block.type == "text").text
 
                         )

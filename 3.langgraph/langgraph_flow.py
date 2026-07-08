@@ -3,6 +3,13 @@ import difflib
 from typing import TypedDict
 
 from langgraph.graph import StateGraph, END
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+if not os.getenv("ANTHROPIC_API_KEY"):
+    raise ValueError("Required environment variable ANTHROPIC_API_KEY is missing. Please set it in your .env file.")
+
 from langchain_anthropic import ChatAnthropic
 from langchain_core.messages import HumanMessage
 from langchain_core.tools import tool
@@ -13,8 +20,8 @@ from langchain_core.tools import tool
 # ============================================================
 
 llm = ChatAnthropic(
-    model="claude-sonnet-4-20250514",
-    anthropic_api_key="",
+    anthropic_api_key=os.getenv("ANTHROPIC_API_KEY"),
+    model="claude-sonnet-5",
     temperature=0
 )
 

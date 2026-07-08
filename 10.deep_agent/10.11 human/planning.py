@@ -3,6 +3,13 @@ import time
 
 from deepagents import create_deep_agent
 from langchain.tools import tool
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+if not os.getenv("ANTHROPIC_API_KEY"):
+    raise ValueError("Required environment variable ANTHROPIC_API_KEY is missing. Please set it in your .env file.")
+
 from langchain_anthropic import ChatAnthropic
 
 from payment import payment_workflow
@@ -218,11 +225,9 @@ def process_booking():
 # ============================================================
 
 model = ChatAnthropic(
-
+    api_key=os.getenv("ANTHROPIC_API_KEY"),
     model=
-    "claude-sonnet-4-20250514",
-
-    api_key="YOUR_API_KEY"
+    "claude-sonnet-5"
 )
 
 

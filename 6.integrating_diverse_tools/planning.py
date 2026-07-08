@@ -9,9 +9,14 @@ from tools import (
 # CLAUDE
 # ============================================================
 
-client = anthropic.Anthropic(
-    api_key="YOUR_API_KEY"
-)
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+if not os.getenv("ANTHROPIC_API_KEY"):
+    raise ValueError("Required environment variable ANTHROPIC_API_KEY is missing. Please set it in your .env file.")
+
+client = anthropic.Anthropic(api_key=os.getenv("ANTHROPIC_API_KEY"))
 
 conversation_history = []
 current_flight = None
@@ -74,7 +79,7 @@ def ai_agent(user_input):
 
     response = client.messages.create(
 
-        model="claude-sonnet-4-20250514",
+        model="claude-sonnet-5",
 
         max_tokens=300,
 
@@ -256,4 +261,4 @@ Status    : {result['status']}
 """
 
 
-    return response.content[0].text
+    return next(block for block in response.content if block.type == "text").text

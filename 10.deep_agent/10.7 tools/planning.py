@@ -1,5 +1,12 @@
 from deepagents import create_deep_agent
 from langchain_core.tools import tool
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+if not os.getenv("ANTHROPIC_API_KEY"):
+    raise ValueError("Required environment variable ANTHROPIC_API_KEY is missing. Please set it in your .env file.")
+
 from langchain_anthropic import ChatAnthropic
 from langgraph.checkpoint.memory import MemorySaver
 
@@ -15,10 +22,8 @@ import uuid
 # ============================================================
 
 llm = ChatAnthropic(
-
-    model="claude-sonnet-4-20250514",
-
-    api_key="YOUR_API_KEY"
+    api_key=os.getenv("ANTHROPIC_API_KEY"),
+    model="claude-sonnet-5"
 )
 
 

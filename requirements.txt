@@ -1,0 +1,10 @@
+anthropic>=0.96.0
+deepagents
+fastmcp
+langchain
+langchain-anthropic
+langchain-core
+langgraph
+mcp
+python-dotenv
+requests
