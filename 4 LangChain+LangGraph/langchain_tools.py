@@ -2,34 +2,20 @@ import random
 from langchain_core.tools import tool
 
 # ============================================================
-# Mock Flight Database
+# Mock Airlines
 # ============================================================
 
-flights = [
-    {
-        "flight_id": "FL101",
-        "airline": "IndiGo",
-        "from": "Bangalore",
-        "to": "Delhi",
-        "time": "6:30 PM",
-        "price": 5200
-    },
-    {
-        "flight_id": "FL202",
-        "airline": "Air India",
-        "from": "Bangalore",
-        "to": "Delhi",
-        "time": "8:15 PM",
-        "price": 6100
-    },
-    {
-        "flight_id": "FL303",
-        "airline": "Vistara",
-        "from": "Bangalore",
-        "to": "Delhi",
-        "time": "9:45 PM",
-        "price": 5700
-    }
+AIRLINES = [
+    "IndiGo",
+    "Air India",
+    "Vistara",
+    "Emirates",
+    "Qatar Airways",
+    "Singapore Airlines",
+    "Lufthansa",
+    "British Airways",
+    "Delta Airlines",
+    "United Airlines"
 ]
 
 # ============================================================
@@ -39,23 +25,29 @@ flights = [
 @tool
 def search_flights(source: str, destination: str):
     """
-    Search available flights.
+    Generate a realistic mock flight between any two cities.
     """
 
-    results = []
+    return {
 
-    for flight in flights:
+        "flight_id": f"FL{random.randint(100,999)}",
 
-        if (
-            flight["from"].lower() == source.lower()
-            and flight["to"].lower() == destination.lower()
-        ):
-            results.append(flight)
+        "airline": random.choice(AIRLINES),
 
-    if not results:
-        return "No flights found."
+        "from": source.title(),
 
-    return random.choice(results)
+        "to": destination.title(),
+
+        "time": (
+            f"{random.randint(1,12)}:"
+            f"{random.choice(['00','15','30','45'])} "
+            f"{random.choice(['AM','PM'])}"
+        ),
+
+        "price": random.randint(3500, 85000)
+
+    }
+
 
 # ============================================================
 # Book Flight Tool
@@ -64,14 +56,19 @@ def search_flights(source: str, destination: str):
 @tool
 def book_flight(flight_id: str):
     """
-    Confirm flight booking.
+    Book a flight.
     """
 
     return {
+
         "status": "CONFIRMED",
-        "booking_id": "BK78291",
+
+        "booking_id": f"BK{random.randint(1000,9999)}",
+
         "flight_id": flight_id
+
     }
+
 
 # ============================================================
 # Cancel Flight Tool
@@ -80,10 +77,13 @@ def book_flight(flight_id: str):
 @tool
 def cancel_flight(flight_id: str):
     """
-    Cancel booked flight.
+    Cancel a booked flight.
     """
 
     return {
+
         "status": "CANCELLED",
+
         "flight_id": flight_id
+
     }

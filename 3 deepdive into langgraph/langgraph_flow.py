@@ -14,18 +14,18 @@ from langchain_core.tools import tool
 
 llm = ChatAnthropic(
     model="claude-sonnet-4-20250514",
-    anthropic_api_key="YOUR_API_KEY",
+    anthropic_api_key="",
     temperature=0
 )
 
-current_flight=None
+current_flight = None
 
 
 # ============================================================
 # Flight Database
 # ============================================================
 
-flights=[
+flights = [
 
 {
 "flight_id":"FL101",
@@ -61,7 +61,7 @@ flights=[
 # Normalize
 # ============================================================
 
-city_map={
+city_map = {
 
 "bengaluru":"bangalore",
 "blr":"bangalore",
@@ -69,14 +69,15 @@ city_map={
 
 }
 
+
 def normalize(city):
 
-    city=city.lower()
+    city = city.lower()
 
     if city in city_map:
         return city_map[city]
 
-    matches=difflib.get_close_matches(
+    matches = difflib.get_close_matches(
         city,
         ["bangalore","delhi"],
         n=1,
@@ -91,20 +92,20 @@ def normalize(city):
 # ============================================================
 
 @tool
-def search_flights(source:str,destination:str):
+def search_flights(source:str, destination:str):
     """Search flights"""
 
-    source=normalize(source)
-    destination=normalize(destination)
+    source = normalize(source)
+    destination = normalize(destination)
 
-    matches=[]
+    matches = []
 
     for flight in flights:
 
-        if(
-            flight["from"].lower()==source
+        if (
+            flight["from"].lower() == source
             and
-            flight["to"].lower()==destination
+            flight["to"].lower() == destination
         ):
             matches.append(flight)
 
@@ -125,6 +126,7 @@ def book_flight(flight_id:str):
 
         "flight_id":
         flight_id
+
     }
 
 
@@ -136,18 +138,17 @@ def cancel_flight(flight_id:str):
 
         "flight_id":
         flight_id
+
     }
-
-
 # ============================================================
 # State
 # ============================================================
 
 class AgentState(TypedDict):
 
-    user_input:str
-    plan:object
-    response:str
+    user_input: str
+    plan: object
+    response: str
 
 
 # ============================================================
@@ -155,7 +156,7 @@ class AgentState(TypedDict):
 # Generate Plan
 # ============================================================
 
-llm_tools=llm.bind_tools(
+llm_tools = llm.bind_tools(
     [
         search_flights,
         book_flight,
@@ -163,24 +164,62 @@ llm_tools=llm.bind_tools(
     ]
 )
 
+
 def generate_plan(state):
 
-    plan=llm_tools.invoke(
+    global current_flight
 
+    prompt = state["user_input"]
+
+    # Give Claude the current flight context if one exists
+    if current_flight:
+
+        prompt = f"""
+You are an AI Flight Assistant.
+
+Current selected flight:
+
+Flight ID : {current_flight['flight_id']}
+Airline   : {current_flight['airline']}
+From      : {current_flight['from']}
+To        : {current_flight['to']}
+Time      : {current_flight['time']}
+Price     : ₹{current_flight['price']}
+
+User request:
+{state["user_input"]}
+
+Instructions:
+
+- If the user says "book this flight", "book it",
+  or anything similar, call book_flight()
+  using the current flight_id.
+
+- If the user says "cancel this flight",
+  "cancel it", or anything similar,
+  call cancel_flight() using the current flight_id.
+
+- If the user says "generate another flight",
+  "another flight", "show another flight",
+  or anything similar,
+  call search_flights() using the SAME
+  source and destination as the current flight.
+
+- Otherwise, interpret the request normally
+  and choose the correct tool.
+"""
+
+    plan = llm_tools.invoke(
         [
             HumanMessage(
-                content=state["user_input"]
+                content=prompt
             )
         ]
-
     )
 
     return {
-
-        "plan":plan
+        "plan": plan
     }
-
-
 # ============================================================
 # Node 2
 # Execute Plan
@@ -190,31 +229,40 @@ def execute_plan(state):
 
     global current_flight
 
-    plan=state["plan"]
+    plan = state["plan"]
 
     if not plan.tool_calls:
 
         return {
-
-            "response":
-            plan.content
+            "response": plan.content
         }
 
-    tool_call=plan.tool_calls[0]
+    tool_call = plan.tool_calls[0]
 
-    name=tool_call["name"]
+    name = tool_call["name"]
 
-    args=tool_call["args"]
+    args = tool_call["args"]
 
-    if name=="search_flights":
 
-        result=search_flights.invoke(args)
+    # ========================================================
+    # Search Flights
+    # ========================================================
 
-        current_flight=result
+    if name == "search_flights":
+
+        result = search_flights.invoke(args)
+
+        if "message" in result:
+
+            return {
+                "response": result["message"]
+            }
+
+        current_flight = result
 
         return {
 
-            "response":f"""
+            "response": f"""
 
 ==================================================
 Recommended Flight
@@ -226,20 +274,27 @@ Route     : {result['from']} → {result['to']}
 Time      : {result['time']}
 Price     : ₹{result['price']}
 
-1. Generate New Flight
-2. Book Current Flight
-3. Cancel Flight
+You can now say:
+
+• Book this flight
+• Generate another flight
+• Cancel this flight
+
 """
         }
 
 
-    elif name=="book_flight":
+    # ========================================================
+    # Book Flight
+    # ========================================================
 
-        result=book_flight.invoke(args)
+    elif name == "book_flight":
+
+        result = book_flight.invoke(args)
 
         return {
 
-            "response":f"""
+            "response": f"""
 
 ==================================================
 Flight Confirmed
@@ -247,32 +302,43 @@ Flight Confirmed
 
 Booking ID : {result['booking_id']}
 Flight ID  : {result['flight_id']}
+
 """
         }
 
 
-    elif name=="cancel_flight":
+    # ========================================================
+    # Cancel Flight
+    # ========================================================
 
-        result=cancel_flight.invoke(args)
+    elif name == "cancel_flight":
+
+        result = cancel_flight.invoke(args)
 
         return {
 
-            "response":f"""
+            "response": f"""
 
 ==================================================
 Flight Cancelled
 ==================================================
 
 Flight ID : {result['flight_id']}
+
 """
         }
+
+
+    return {
+        "response": "I couldn't understand the request."
+    }
 
 
 # ============================================================
 # Graph
 # ============================================================
 
-graph=StateGraph(
+graph = StateGraph(
     AgentState
 )
 
@@ -300,4 +366,4 @@ graph.add_edge(
     END
 )
 
-app=graph.compile()
+app = graph.compile()
