@@ -17,9 +17,10 @@ with open("data/golden_dataset.json","r") as f:
 results={}
 
 
-for test in prompts:
+for i, test in enumerate(prompts):
 
     user_input=test["input"]
+    print(f"[{i+1}/{len(prompts)}] Evaluating prompt: '{user_input}'...")
 
 
     # Get Claude prediction

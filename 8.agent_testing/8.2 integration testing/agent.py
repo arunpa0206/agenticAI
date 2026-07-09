@@ -23,7 +23,6 @@ llm=ChatAnthropic(
     anthropic_api_key=os.getenv("ANTHROPIC_API_KEY"),
     model="claude-sonnet-5",
 
-    temperature=0
 
 )
 
@@ -73,17 +72,10 @@ class FlightBookingAgent:
                 "to" in words
             ):
 
-                source=words[
-                    words.index(
-                        "from"
-                    )+1
-                ]
-
-                destination=words[
-                    words.index(
-                        "to"
-                    )+1
-                ]
+                from_idx = words.index("from")
+                source = words[from_idx + 1]
+                to_idx = words.index("to", from_idx)
+                destination = words[to_idx + 1]
 
         except:
 

@@ -39,31 +39,21 @@ def planning_agent(
 
 
     # Extract source city
+    from_idx = -1
     if "from" in words:
-
-        idx = words.index(
-            "from"
-        )
-
-        if idx + 1 < len(words):
-
-            source = words[
-                idx + 1
-            ]
-
+        from_idx = words.index("from")
+        if from_idx + 1 < len(words):
+            source = words[from_idx + 1]
 
     # Extract destination city
     if "to" in words:
-
-        idx = words.index(
-            "to"
-        )
-
+        start_search = from_idx if from_idx != -1 else 0
+        try:
+            idx = words.index("to", start_search)
+        except ValueError:
+            idx = words.index("to")
         if idx + 1 < len(words):
-
-            destination = words[
-                idx + 1
-            ]
+            destination = words[idx + 1]
 
 
     return {

@@ -22,7 +22,6 @@ from langchain_core.tools import tool
 llm = ChatAnthropic(
     anthropic_api_key=os.getenv("ANTHROPIC_API_KEY"),
     model="claude-sonnet-5",
-    temperature=0
 )
 
 current_flight = None

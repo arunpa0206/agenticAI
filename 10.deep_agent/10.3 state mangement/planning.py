@@ -2,7 +2,6 @@ from deepagents import (
     create_deep_agent
 )
 
-from langchain_anthropic import (
 import os
 from dotenv import load_dotenv
 
@@ -10,6 +9,7 @@ load_dotenv()
 if not os.getenv("ANTHROPIC_API_KEY"):
     raise ValueError("Required environment variable ANTHROPIC_API_KEY is missing. Please set it in your .env file.")
 
+from langchain_anthropic import (
     ChatAnthropic
 )
 

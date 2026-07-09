@@ -23,7 +23,6 @@ from tools import (
 llm = ChatAnthropic(
     anthropic_api_key=os.getenv("ANTHROPIC_API_KEY"),
     model="claude-sonnet-5",
-    temperature=0
 )
 
 # ============================================================

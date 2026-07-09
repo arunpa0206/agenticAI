@@ -3,6 +3,7 @@ venv/
 ENV/
 env/
 .venv/
+agentenv/
 
 # Environment variables / secrets
 .env
