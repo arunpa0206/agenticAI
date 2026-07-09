@@ -17,3 +17,51 @@ with your own Anthropic API key.
 3. Run the project
 
 python main.py
+
+---
+
+## Code Execution Flow
+
+```text
+                +------------------+
+                |   Start Program  |
+                +------------------+
+                          |
+                          v
+                +------------------+
+                | User Enters Query|
+                +------------------+
+                          |
+                          v
+                +------------------+
+                | Parallel Agent   |
+                | Coordinates tasks|
+                +------------------+
+                          |
+                          v
+                +------------------+
+                | Spawn concurrent |
+                | threads/tasks    |
+                +------------------+
+                     /     |     \
+             Cheapest    Premium   Nonstop
+                 /         |         \
+                v          v          v
+        +---------+   +---------+   +---------+
+        | Search  |   | Search  |   | Search  |
+        +---------+   +---------+   +---------+
+                 \         |         /
+                  v        v        v
+                +------------------+
+                | Wait & Aggregate |
+                | all results      |
+                +------------------+
+                          |
+                          v
+                +------------------+
+                | Display Response |
+                +------------------+
+                          |
+                          v
+                         End
+```

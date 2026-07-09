@@ -17,3 +17,40 @@ with your own Anthropic API key.
 3. Run the project
 
 python main.py
+
+---
+
+## Code Execution Flow
+
+```text
+                +------------------+
+                |   Start Program  |
+                +------------------+
+                          |
+                          v
+                +------------------+
+                | User Enters Query|
+                +------------------+
+                          |
+                          v
+                +------------------+
+                | Deep Agent       |
+                | Calls Filesystem |
+                | tools            |
+                +------------------+
+                          |
+                          v
+                +------------------+
+                | Read / Write files|
+                | state.json or    |
+                | context.txt      |
+                +------------------+
+                          |
+                          v
+                +------------------+
+                | Display Response |
+                +------------------+
+                          |
+                          v
+                         End
+```

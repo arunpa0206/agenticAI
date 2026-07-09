@@ -17,3 +17,40 @@ with your own Anthropic API key.
 3. Run the project
 
 python main.py
+
+---
+
+## Code Execution Flow
+
+```text
+                +------------------+
+                |   Start Program  |
+                +------------------+
+                          |
+                          v
+                +------------------+
+                | User Enters Query|
+                +------------------+
+                          |
+                          v
+                +------------------+
+                | Task Decomposing |
+                | Split query into |
+                | steps (search,   |
+                | details, book)   |
+                +------------------+
+                          |
+                          v
+                +------------------+
+                | Execute step by  |
+                | step in sequence |
+                +------------------+
+                          |
+                          v
+                +------------------+
+                | Display Response |
+                +------------------+
+                          |
+                          v
+                         End
+```

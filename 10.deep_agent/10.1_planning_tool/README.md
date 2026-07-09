@@ -64,3 +64,39 @@ main.py
    |
    v
 User
+
+---
+
+## Code Execution Flow
+
+```text
+                +------------------+
+                |   Start Program  |
+                +------------------+
+                          |
+                          v
+                +------------------+
+                | User Enters Query|
+                +------------------+
+                          |
+                          v
+                +------------------+
+                |    Deep Agent    |
+                |   Planner Node   |
+                +------------------+
+                          |
+                          v
+                +------------------+
+                | Execute Planning |
+                | tools to search &|
+                | book flights     |
+                +------------------+
+                          |
+                          v
+                +------------------+
+                | Display Response |
+                +------------------+
+                          |
+                          v
+                         End
+```

@@ -64,3 +64,47 @@ main.py
    |
    v
 User
+
+---
+
+## Code Execution Flow
+
+```text
+                +------------------+
+                |   Start Program  |
+                +------------------+
+                          |
+                          v
+                +------------------+
+                | User Enters Query|
+                +------------------+
+                          |
+                          v
+                +------------------+
+                |     AI Agent     |
+                | Ask LLM to plan  |
+                | required tools   |
+                +------------------+
+                          |
+                          v
+                +------------------+
+                | Execute Tools    |
+                | Search -> Fare ->|
+                | Price -> Book    |
+                +------------------+
+                          |
+                          v
+                +------------------+
+                |   Formulate Plan |
+                | LLM compiles all |
+                | tool details     |
+                +------------------+
+                          |
+                          v
+                +------------------+
+                | Display Response |
+                +------------------+
+                          |
+                          v
+                         End
+```
