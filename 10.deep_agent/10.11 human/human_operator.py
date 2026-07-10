@@ -56,6 +56,8 @@ def wait_for_approval():
     )
 
 
+def get_approved_flights():
+
     with open(
 
         FLIGHT_FILE,
@@ -91,4 +93,4 @@ def wait_for_approval():
             )
 
 
-    return approved
+    return approved

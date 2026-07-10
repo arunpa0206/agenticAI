@@ -142,19 +142,9 @@ def generate_plan():
     Generate flight plan
     """
 
-    global previous
-
-    available = [
-
-        x for x in flights
-        if x != previous
-    ]
-
     selected = random.choice(
-        available
+        flights
     )
-
-    previous = selected
 
     state = load_state()
 
@@ -180,7 +170,6 @@ def generate_plan():
     )
 
     return selected
-
 
 # ====================================================
 # CONFIRM TICKET TOOL

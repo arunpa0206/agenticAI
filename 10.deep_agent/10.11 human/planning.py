@@ -14,7 +14,7 @@ from langchain_anthropic import ChatAnthropic
 
 from payment import payment_workflow
 from notification import notification_workflow
-from human_operator import wait_for_approval
+from human_operator import wait_for_approval, get_approved_flights
 
 from premium_business import premium_business_search
 from cheapest_flight import cheapest_flight_search
@@ -127,7 +127,8 @@ def approval_checkpoint():
     Human approval step
     """
 
-    approved = wait_for_approval()
+    wait_for_approval()
+    approved = get_approved_flights()
 
 
     if len(
@@ -193,7 +194,10 @@ def process_booking():
     Process booking
     """
 
-    approved = wait_for_approval()
+    approved = get_approved_flights()
+
+    if len(approved) == 0:
+        return "No approved flights found to book."
 
     selected = approved[0]
 
