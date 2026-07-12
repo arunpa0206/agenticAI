@@ -1,0 +1,9 @@
+Artificial Intelligence (AI) enables machines to perform tasks that normally require human intelligence.
+
+Machine Learning is a subset of Artificial Intelligence where computers learn patterns from data instead of being explicitly programmed.
+
+Deep Learning is a subset of Machine Learning that uses neural networks with many layers.
+
+Natural Language Processing (NLP) enables computers to understand and generate human language.
+
+Computer Vision enables machines to analyze and understand images and videos.

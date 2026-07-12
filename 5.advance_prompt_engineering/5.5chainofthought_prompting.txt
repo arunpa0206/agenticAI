@@ -1,0 +1,57 @@
+Instruction:
+For every flight request, provide a concise decision summary before the final answer. Summarize the route, date, time preference, filtering, comparison, and selection process. Use only the flight data provided below to determine the answer.
+
+Mock Flight Data:
+[
+  {
+    "airline": "IndiGo",
+    "route": "Bangalore → Delhi",
+    "departure": "6:30 PM",
+    "price": 5200
+  },
+  {
+    "airline": "Akasa Air",
+    "route": "Bangalore → Delhi",
+    "departure": "5:45 PM",
+    "price": 5600
+  },
+  {
+    "airline": "Air India",
+    "route": "Bangalore → Delhi",
+    "departure": "7:15 PM",
+    "price": 6100
+  }
+]
+
+Example:
+User: "Find the cheapest flight from Mumbai to Chennai tomorrow morning."
+
+Output:
+
+Decision Summary:
+- Route: Mumbai → Chennai
+- Date: Tomorrow
+- Time: Morning
+- Filter available flights
+- Compare prices
+- Select lowest valid fare
+
+Final Answer:
+₹4,800 — IndiGo, Departure: 8:00 AM
+
+Task:
+User: "Find the cheapest flight from Bangalore to Delhi tomorrow evening."
+
+Expected Output:
+
+Decision Summary:
+- Route: Bangalore → Delhi
+- Date: Tomorrow
+- Time: Evening (after 5 PM)
+- Filter available flights
+- Compare prices
+- Select lowest valid fare
+
+Final Answer:
+₹5,200 — IndiGo, Departure: 6:30 PM
+

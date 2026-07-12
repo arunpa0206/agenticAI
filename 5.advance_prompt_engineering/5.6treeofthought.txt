@@ -1,0 +1,50 @@
+Prompt for the Specialist: 
+
+You are three travel specialists evaluating flights from Bangalore to Delhi:
+
+Specialist 1: Cost Analyst Focus on base fare, true cost, baggage, meals
+
+Specialist 2: Timing Specialist Focus on departure time, flight duration, arrival time  
+
+Specialist 3: Reliability Advisor Focus on on-time performance, cancellation policy, flexibility
+
+Prompt 1 — Score & Prune
+
+You are three experts: Cost Analyst, Comfort Specialist, and Risk Advisor. 
+
+Score these Bangalore → Delhi flights (1–10) on your specialty and vote KEEP or PRUNE:
+
+Flight A: IndiGo | 6:00 PM | ₹3,200 | Direct 
+
+Flight B: Vistara | 9:00 PM | ₹5,400 | Direct | Meal included 
+
+Flight C: Air India| 7:30 PM | ₹4,800 | Direct | 25kg baggage 
+
+Flight D: SpiceJet | 2:00 PM | ₹2,600 | 1 Stop
+
+Prune any flight two or more experts reject. 
+
+Get the score
+
+Prompt 2 — Evaluate Survivors
+
+For surviving flights, each expert assesses: 
+
+True Cost — Price, Baggage, Meals
+
+Timing — Departure, Duration, Arrival
+
+Reliability — Punctuality, Cancellation, Flexibility
+
+Prompt 3 — Final Decision
+
+Rank surviving flights. Give one verdict each:
+
+All three experts must agree on a winner. 
+
+Winner: IndiGo — 6 PM Nonstop | BLR → DEL
+
+Why it wins:
+
+Price — Cheapest direct flight at ₹3,200
+

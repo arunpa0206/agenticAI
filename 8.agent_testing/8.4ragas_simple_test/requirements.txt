@@ -1,0 +1,8 @@
+ragas
+datasets
+langchain
+langchain-community
+langchain-huggingface
+langchain-openai
+openai
+google-cloud-aiplatform
