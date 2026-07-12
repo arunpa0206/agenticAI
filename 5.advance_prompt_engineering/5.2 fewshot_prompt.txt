@@ -1,3 +1,47 @@
+Flight Data:
+[
+  {
+    "flight_id": "6E101",
+    "airline": "IndiGo",
+    "from": "Bangalore",
+    "to": "Delhi",
+    "departure": "6:30 PM",
+    "arrival": "9:20 PM",
+    "price": 5200,
+    "stops": 0
+  },
+  {
+    "flight_id": "QP201",
+    "airline": "Akasa Air",
+    "from": "Bangalore",
+    "to": "Delhi",
+    "departure": "5:45 PM",
+    "arrival": "8:35 PM",
+    "price": 5600,
+    "stops": 0
+  },
+  {
+    "flight_id": "AI503",
+    "airline": "Air India",
+    "from": "Bangalore",
+    "to": "Delhi",
+    "departure": "7:15 PM",
+    "arrival": "10:10 PM",
+    "price": 6100,
+    "stops": 0
+  },
+  {
+    "flight_id": "SG701",
+    "airline": "SpiceJet",
+    "from": "Bangalore",
+    "to": "Delhi",
+    "departure": "3:00 PM",
+    "arrival": "7:00 PM",
+    "price": 4800,
+    "stops": 1
+  }
+]
+
 Example 1:
 User: “Find flights from Bangalore to Delhi tomorrow”
 Tool Selected: Flight Search API
@@ -9,5 +53,3 @@ User: “What is the weather in Delhi tomorrow evening?”
 Tool Selected: Weather API
 New User Query:
 “Book the best flight from Bangalore to Delhi under ₹6,000”
-Model Decision:
-Based on previous examples, the model selects the Flight Search API to retrieve and compare available flights.

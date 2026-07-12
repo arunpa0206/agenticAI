@@ -1,0 +1,35 @@
+● Prompt 1 — Define Goals & 
+Constraints
+● You are three specialists: Risk 
+Analyst, Growth Strategist, Portfolio 
+Advisor. 
+● I have ₹10 lakhs to invest for 10 
+years. Evaluate these options
+
+● Option A: Mutual Funds | 14% return 
+| Medium risk 
+● Option B: Fixed Deposit | 7% return | 
+No risk 
+● Option C: Stock Market | 18% return | 
+High risk 
+● Option D: Real Estate | 11% return | 7 
+yr lock-in
+
+● Eliminate immediately if: 
+●- Returns below 12% annually 
+●- Lock-in beyond 5 years
+● Each specialist votes KEEP or 
+ELIMINATE with one reason
+
+● Prompt 2 — Score & Penalise.
+● Score surviving options 1-10 then 
+deduct: 
+●- No tax benefit → -2 points 
+●- High volatility, no hedge → -2 
+point
+
+ For the winner show:
+● Value of ₹10 lakhs after 10 years 
+● Risk level 
+● One line why it wins One 
+recommendation on

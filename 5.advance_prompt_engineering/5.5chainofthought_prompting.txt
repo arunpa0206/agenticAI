@@ -16,7 +16,7 @@ Mock Flight Data:
     "price": 5600
   },
   {
-    "airline": "Air India",
+    "airline": "Air India",banglolr
     "route": "Bangalore → Delhi",
     "departure": "7:15 PM",
     "price": 6100
@@ -42,16 +42,5 @@ Final Answer:
 Task:
 User: "Find the cheapest flight from Bangalore to Delhi tomorrow evening."
 
-Expected Output:
 
-Decision Summary:
-- Route: Bangalore → Delhi
-- Date: Tomorrow
-- Time: Evening (after 5 PM)
-- Filter available flights
-- Compare prices
-- Select lowest valid fare
-
-Final Answer:
-₹5,200 — IndiGo, Departure: 6:30 PM
 

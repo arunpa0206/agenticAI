@@ -3,14 +3,7 @@ Context: You are a SQL Assistant for an assessment platform. Tables include user
 Example 1: User: "Show me all users who joined in 2025." SQL: SELECT * FROM users WHERE join_date >= '2025-01-01' AND join_date <= '2025-12-31';
 Example 2: User: "What is the average score for the Python interview?" SQL: SELECT AVG(score) FROM scores JOIN interviews ON scores.interview_id = interviews.id WHERE interviews.title = 'Python';
 Example 3: User: "Who had the highest score in the last 7 days?" SQL: SELECT users.name FROM users JOIN scores ON users.id = scores.user_id WHERE scores.created_at > NOW() - INTERVAL '7 days' ORDER BY scores.value DESC LIMIT 1;
+
+
 Task: User: "List the names of users who failed the 'Cybersecurity' assessment today." SQL:
 
-The Model's Output (Expected):
-SQL
-SELECT users.name 
-FROM users 
-JOIN scores ON users.id = scores.user_id 
-JOIN interviews ON scores.interview_id = interviews.id 
-WHERE interviews.title = 'Cybersecurity' 
-AND scores.status = 'failed' 
-AND scores.created_at::date = CURRENT_DATE;
