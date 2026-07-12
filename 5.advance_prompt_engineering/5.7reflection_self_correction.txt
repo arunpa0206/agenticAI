@@ -1,0 +1,25 @@
+Mock Flight Data:
+[
+  {
+    "airline": "IndiGo",
+    "route": "Bangalore → Delhi",
+    "departure": "6:30 PM",
+    "price": 5200
+  },
+  {
+    "airline": "Akasa Air",
+    "route": "Bangalore → Delhi",
+    "departure": "5:45 PM",
+    "price": 5600
+  },
+  {
+    "airline": "Air India",banglolr
+    "route": "Bangalore → Delhi",
+    "departure": "7:15 PM",
+    "price": 6100
+  }
+]
+
+Prompt 1: Can you find a flight from banglore to delhi using our database with a budget of 5500
+
+Prompt 2: Indigo is now on a strike, hence they are not working. Can you choose a different airline
