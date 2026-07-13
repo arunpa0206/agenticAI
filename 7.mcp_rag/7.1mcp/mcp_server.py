@@ -1,45 +1,19 @@
 from mcp.server.fastmcp import FastMCP
-from notification import send_confirmation
 
-
-mcp = FastMCP(
-    "FlightPlanner"
-)
+mcp = FastMCP("DemoServer")
 
 
 @mcp.tool()
-def planning_tool(
-    source:str,
-    destination:str,
-    date:str
-):
-
-    return {
-
-        "flight_number":"AI-203",
-        "source":source,
-        "destination":destination,
-        "date":date,
-        "price":"₹7500",
-        "status":"Available"
-
-    }
+def hello_tool(name: str):
+    """Greets the user."""
+    return f"Hello {name}! Welcome to MCP."
 
 
 @mcp.tool()
-def notification_tool(
-    user_name:str,
-    flight_number:str
-):
-
-    return send_confirmation(
-
-        user_name,
-        flight_number
-
-    )
+def add_tool(a: int, b: int):
+    """Adds two numbers."""
+    return a + b
 
 
-if __name__=="__main__":
-
+if __name__ == "__main__":
     mcp.run()

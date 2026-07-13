@@ -59,7 +59,7 @@ do NOT search again for booking requests.
 
 
 # ============================================================
-# AGENT
+# AGENT (this call returns which tool to use)
 # ============================================================
 
 def ai_agent(user_input):
@@ -104,7 +104,7 @@ def ai_agent(user_input):
 
 
         # ====================================================
-        # AUTO CURRENT FLIGHT HANDLING
+        # AUTO CURRENT FLIGHT HANDLING (this block gets the current flight and constructs the flight input for each of the tools)
         # ====================================================
 
         if current_flight:
@@ -148,7 +148,7 @@ def ai_agent(user_input):
                 }
 
 
-        # Execute tool
+        # Execute tool(the tool is being called from the tool map and we print the response after this)
         result = tool_map[
             tool_name
         ](

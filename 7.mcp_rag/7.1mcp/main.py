@@ -1,18 +1,6 @@
-from planning import run_flight_planner
 import asyncio
+from planning import run_demo
 
+print("===== MCP Demo =====")
 
-# ============================================================
-# APPLICATION START
-# ============================================================
-
-print("\n========== FLIGHT PLANNER ==========\n")
-
-
-# ============================================================
-# START ASYNC PROGRAM
-# ============================================================
-
-asyncio.run(
-    run_flight_planner()
-)
+asyncio.run(run_demo())
