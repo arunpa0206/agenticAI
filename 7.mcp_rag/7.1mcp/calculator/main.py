@@ -1,5 +1,5 @@
 import asyncio
-from planning import run_demo
+from mcp_client import run_demo
 
 print("========== MCP Demo ==========")
 
