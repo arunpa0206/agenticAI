@@ -1,5 +1,0 @@
-anthropic
-langchain
-langchain-anthropic
-langchain-core
-python-dotenv

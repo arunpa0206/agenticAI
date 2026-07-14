@@ -39,8 +39,6 @@ def generate_output(results):
 
         final_results.append({
 
-            "id":data["id"],
-
             "intent":data["intent"],
 
             "metrics":{

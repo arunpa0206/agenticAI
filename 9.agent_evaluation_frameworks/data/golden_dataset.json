@@ -1,39 +1,24 @@
 [
     {
-        "id":1,
-
-        "intent":"flight_search",
-
-        "input":"Find flights from Bangalore to Delhi tomorrow",
-
-        "expected_output":"Available flights found",
-
-        "expected_tools":[
+        "intent": "flight_search",
+        "input": "Find flights from Bangalore to Delhi tomorrow",
+        "expected_output": "Available flights found",
+        "expected_tools": [
             "search_flights"
         ],
-
-        "expected_steps":1,
-
-        "policy":"valid search request"
+        "expected_steps": 1,
+        "policy": "valid search request"
     },
-
     {
-        "id":2,
-
-        "intent":"flight_booking",
-
-        "input":"Book the cheapest flight from Bangalore to Delhi tomorrow",
-
-        "expected_output":"Flight booked",
-
-        "expected_tools":[
+        "intent": "flight_booking",
+        "input": "Book the cheapest flight from Bangalore to Delhi tomorrow",
+        "expected_output": "Flight booked",
+        "expected_tools": [
             "search_flights",
             "select_flight",
             "book_flight"
         ],
-
-        "expected_steps":3,
-
-        "policy":"book only after selecting available flight"
+        "expected_steps": 3,
+        "policy": "book only after selecting available flight"
     }
 ]

@@ -1,137 +1,137 @@
-def evaluate_metrics(
-
-    user_input,
-    prediction,
-    golden,
-    results
-
-):
-
-
-    # Detect intent
-
+def detect_intent(user_input):
+    # Detect the user's intent from the input
     if "find" in user_input.lower():
-
-        intent="flight_search"
-
+        detected_intent = "flight_search"
     else:
+        detected_intent = "flight_booking"
 
-        intent="flight_booking"
-
-
-    expected=None
+    return detected_intent
 
 
-    for item in golden:
+def find_golden_record(detected_intent, golden_dataset):
+    # Find the matching record in the golden dataset
+    golden_record = None
 
-        if item["intent"]==intent:
-
-            expected=item
+    for record in golden_dataset:
+        if record["intent"] == detected_intent:
+            golden_record = record
             break
 
+    return golden_record
 
-    id=expected["id"]
 
-
-    # Initialize values
-
-    if id not in results:
-
-        results[id]={
-
-            "id":id,
-
-            "intent":intent,
-
-            "success_total":0,
-
-            "tool_total":0,
-
-            "step_total":0,
-
-            "policy_total":0,
-
-            "count":0
+def initialize_results(detected_intent, results):
+    # Initialize the metrics for this intent if it doesn't already exist
+    if detected_intent not in results:
+        results[detected_intent] = {
+            "success_total": 0,
+            "tool_total": 0,
+            "step_total": 0,
+            "policy_total": 0,
+            "count": 0,
         }
 
 
-    current=results[id]
+def calculate_metrics(
+    golden_record,
+    detected_intent,
+    agent_prediction,
+):
+    # Extract the agent's output
+    agent_response = agent_prediction["response"]
+    used_tools = agent_prediction["tools"]
+    reasoning_steps = agent_prediction["steps"]
 
+    # Calculate Success Score
+    success_score = 0
 
-    actual_response=prediction["response"]
+    if golden_record["expected_output"].lower() in agent_response.lower():
+        success_score = 100
 
-    actual_tools=prediction["tools"]
+    # Calculate Tool Accuracy
+    matched_tools = len(
+        set(used_tools) &
+        set(golden_record["expected_tools"])
+    )
 
-    actual_steps=prediction["steps"]
+    tool_accuracy = (
+        matched_tools /
+        len(golden_record["expected_tools"])
+    ) * 100
 
-
-    # Success
-
-    success=0
+    # Calculate Policy Score
+    policy_score = 100
 
     if (
-
-        expected["expected_output"]
-        .lower()
-
-        in
-
-        actual_response.lower()
-
+        detected_intent == "flight_booking"
+        and
+        "search_flights" not in used_tools
     ):
+        policy_score = 0
 
-        success=100
-
-
-    # Tool Accuracy
-
-    matched_tools=len(
-
-        set(actual_tools)
-
-        &
-
-        set(expected["expected_tools"])
-
+    return (
+        success_score,
+        tool_accuracy,
+        reasoning_steps,
+        policy_score,
     )
 
 
-    tool_accuracy=(
-
-        matched_tools/
-
-        len(expected["expected_tools"])
-
-    )*100
-
-
-    # Policy
-
-    policy=100
-
-
-    if (
-
-        intent=="flight_booking"
-
-        and
-
-        "search_flights"
-        not in actual_tools
-
-    ):
-
-        policy=0
+def update_results(
+    detected_intent,
+    results,
+    success_score,
+    tool_accuracy,
+    reasoning_steps,
+    policy_score,
+):
+    # Add the current metrics to the accumulated totals
+    results[detected_intent]["success_total"] += success_score
+    results[detected_intent]["tool_total"] += tool_accuracy
+    results[detected_intent]["step_total"] += reasoning_steps
+    results[detected_intent]["policy_total"] += policy_score
+    results[detected_intent]["count"] += 1
 
 
-    # Store totals
+def evaluate_metrics(
+    user_input,
+    agent_prediction,
+    golden_dataset,
+    results,
+):
+    # Step 1: Detect the user's intent
+    detected_intent = detect_intent(user_input)
 
-    current["success_total"]+=success
+    # Step 2: Find the matching record in the golden dataset
+    golden_record = find_golden_record(
+        detected_intent,
+        golden_dataset,
+    )
 
-    current["tool_total"]+=tool_accuracy
+    # Step 3: Initialize the metrics for this intent
+    initialize_results(
+        detected_intent,
+        results,
+    )
 
-    current["step_total"]+=actual_steps
+    # Step 4: Calculate the evaluation metrics
+    (
+        success_score,
+        tool_accuracy,
+        reasoning_steps,
+        policy_score,
+    ) = calculate_metrics(
+        golden_record,
+        detected_intent,
+        agent_prediction,
+    )
 
-    current["policy_total"]+=policy
-
-    current["count"]+=1
+    # Step 5: Update the accumulated metrics
+    update_results(
+        detected_intent,
+        results,
+        success_score,
+        tool_accuracy,
+        reasoning_steps,
+        policy_score,
+    )
