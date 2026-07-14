@@ -21,7 +21,7 @@ from langchain_core.tools import tool
 
 llm = ChatAnthropic(
     anthropic_api_key=os.getenv("ANTHROPIC_API_KEY"),
-    model="claude-sonnet-5",
+    model="claude-sonnet-5"
 )
 
 current_flight = None
@@ -185,8 +185,91 @@ def agent_node(state):
 # ============================================================
 
 def tool_node(state):
-    print("Inside the tool node")
-    return {}
+
+    global current_flight
+
+    response=state["response"]
+
+    if not response.tool_calls:
+
+        return {
+            "response":response.content
+        }
+
+    tool_call=response.tool_calls[0]
+
+    name=tool_call["name"]
+    args=tool_call["args"]
+
+    # Search
+
+    if name=="search_flights":
+
+        result=search_flights.invoke(args)
+
+        if "message" in result:
+
+            return {
+                "response":"No flights found"
+            }
+
+        current_flight=result
+
+        return {
+
+            "response":f"""
+==================================================
+Recommended Flight
+==================================================
+
+Flight ID : {result['flight_id']}
+Airline   : {result['airline']}
+Route     : {result['from']} → {result['to']}
+Time      : {result['time']}
+Price     : ₹{result['price']}
+
+1. Generate New Flight
+2. Book Current Flight
+3. Cancel Flight
+"""
+        }
+
+
+    # Book
+
+    elif name=="book_flight":
+
+        result=book_flight.invoke(args)
+
+        return {
+
+            "response":f"""
+==================================================
+Flight Confirmed
+==================================================
+
+Booking ID : {result['booking_id']}
+Flight ID  : {result['flight_id']}
+"""
+        }
+
+
+    # Cancel
+
+    elif name=="cancel_flight":
+
+        result=cancel_flight.invoke(args)
+
+        return {
+
+            "response":f"""
+==================================================
+Flight Cancelled
+==================================================
+
+Flight ID : {result['flight_id']}
+"""
+        }
 
 
 # ============================================================
