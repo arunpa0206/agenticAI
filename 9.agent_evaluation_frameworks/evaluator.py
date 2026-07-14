@@ -20,7 +20,7 @@ def find_golden_record(detected_intent, golden_dataset):
     return golden_record
 
 
-def initialize_results(detected_intent, results):
+def initialize_results(detected_intent, results, golden_record=None):
     # Initialize the metrics for this intent if it doesn't already exist
     if detected_intent not in results:
         results[detected_intent] = {
@@ -29,6 +29,7 @@ def initialize_results(detected_intent, results):
             "step_total": 0,
             "policy_total": 0,
             "count": 0,
+            "thresholds": golden_record.get("thresholds") if golden_record else None
         }
 
 
@@ -112,6 +113,7 @@ def evaluate_metrics(
     initialize_results(
         detected_intent,
         results,
+        golden_record,
     )
 
     # Step 4: Calculate the evaluation metrics

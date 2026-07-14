@@ -37,6 +37,12 @@ def generate_output(results):
         )
 
 
+        thresholds = data.get("thresholds") or {}
+        t_success = thresholds.get("success_rate", 80)
+        t_tool = thresholds.get("tool_accuracy", 80)
+        t_steps = thresholds.get("average_steps", 3)
+        t_policy = thresholds.get("policy_compliance", 80)
+
         final_results.append({
 
             "intent":data["intent"],
@@ -49,7 +55,7 @@ def generate_output(results):
 
                     "status":
                     "PASS"
-                    if success_rate>=80
+                    if success_rate>=t_success
                     else "FAIL"
                 },
 
@@ -59,7 +65,7 @@ def generate_output(results):
 
                     "status":
                     "PASS"
-                    if tool_rate>=80
+                    if tool_rate>=t_tool
                     else "FAIL"
                 },
 
@@ -69,7 +75,7 @@ def generate_output(results):
 
                     "status":
                     "PASS"
-                    if average_steps<=3
+                    if average_steps<=t_steps
                     else "FAIL"
                 },
 
@@ -79,7 +85,7 @@ def generate_output(results):
 
                     "status":
                     "PASS"
-                    if policy_rate>=80
+                    if policy_rate>=t_policy
                     else "FAIL"
                 }
 

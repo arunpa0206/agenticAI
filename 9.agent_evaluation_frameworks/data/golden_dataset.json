@@ -7,7 +7,13 @@
             "search_flights"
         ],
         "expected_steps": 1,
-        "policy": "valid search request"
+        "policy": "valid search request",
+        "thresholds": {
+            "success_rate": 80,
+            "tool_accuracy": 80,
+            "average_steps": 3,
+            "policy_compliance": 80
+        }
     },
     {
         "intent": "flight_booking",
@@ -19,6 +25,12 @@
             "book_flight"
         ],
         "expected_steps": 3,
-        "policy": "book only after selecting available flight"
+        "policy": "book only after selecting available flight",
+        "thresholds": {
+            "success_rate": 80,
+            "tool_accuracy": 80,
+            "average_steps": 3,
+            "policy_compliance": 80
+        }
     }
 ]
