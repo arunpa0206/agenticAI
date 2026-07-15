@@ -12,13 +12,13 @@ if not os.getenv("ANTHROPIC_API_KEY"):
 
 from langchain_anthropic import ChatAnthropic
 
-from payment import payment_workflow
-from notification import notification_workflow
-from human_operator import wait_for_approval, get_approved_flights
+from tools.payment import payment_workflow
+from tools.notification import notification_workflow
+from tools.human_operator import wait_for_approval, get_approved_flights
 
-from premium_business import premium_business_search
-from cheapest_flight import cheapest_flight_search
-from nonstop_reasonable import nonstop_reasonable_search
+from tools.premium_business import premium_business_search
+from tools.cheapest_flight import cheapest_flight_search
+from tools.nonstop_reasonable import nonstop_reasonable_search
 
 
 # ============================================================

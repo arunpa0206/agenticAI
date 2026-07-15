@@ -1,264 +1,58 @@
-import json
-import os
-import random
+# ====================================================
+# FLIGHT BOOKING AGENT ORCHESTRATOR
+# ====================================================
 
-from langchain.tools import tool
-from deepagents import create_deep_agent
 import os
+import sys
 from dotenv import load_dotenv
+from deepagents import create_deep_agent
+from langchain_anthropic import ChatAnthropic
 
+# Reconfigure stdout to use UTF-8 to prevent UnicodeEncodeErrors on Windows console (e.g. for ₹ symbol)
+try:
+    sys.stdout.reconfigure(encoding='utf-8')
+except AttributeError:
+    pass
+
+# Load environmental variables and ensure ANTHROPIC_API_KEY is defined
 load_dotenv()
 if not os.getenv("ANTHROPIC_API_KEY"):
     raise ValueError("Required environment variable ANTHROPIC_API_KEY is missing. Please set it in your .env file.")
 
-from langchain_anthropic import ChatAnthropic
-
-from filesys import (
-    FileService
-)
+# Import modular tools
+from tools.generate_plan import generate_plan
+from tools.confirm_ticket import confirm_ticket
 
 
 # ====================================================
-# STATE
+# MODEL INSTANTIATION
 # ====================================================
 
-STATE_FOLDER = "workflow_state"
-
-STATE_FILE = (
-    f"{STATE_FOLDER}/state.json"
-)
-
-os.makedirs(
-    STATE_FOLDER,
-    exist_ok=True
-)
-
-
-DEFAULT_STATE = {
-
-    "current_step":None,
-
-    "travel_plan":{},
-
-    "customer":{},
-
-    "payment_status":"NOT_PAID"
-}
-
-
-# ====================================================
-# SAVE STATE
-# ====================================================
-
-def save_state(state):
-
-    with open(
-
-        STATE_FILE,
-        "w",
-        encoding="utf-8"
-
-    ) as file:
-
-        json.dump(
-
-            state,
-            file,
-            indent=4
-
-        )
-
-
-# ====================================================
-# LOAD STATE
-# ====================================================
-
-def load_state():
-
-    if not os.path.exists(
-        STATE_FILE
-    ):
-
-        save_state(
-            DEFAULT_STATE
-        )
-
-        return DEFAULT_STATE.copy()
-
-
-    with open(
-
-        STATE_FILE,
-        "r",
-        encoding="utf-8"
-
-    ) as file:
-
-        return json.load(
-            file
-        )
-
-
-# ====================================================
-# FLIGHT DATA
-# ====================================================
-
-flights = [
-
-    {
-        "flight_id":"AI101",
-        "airline":"Air India",
-        "time":"10:30 AM",
-        "price":"₹5200"
-    },
-
-    {
-        "flight_id":"6E202",
-        "airline":"IndiGo",
-        "time":"2:15 PM",
-        "price":"₹4300"
-    },
-
-    {
-        "flight_id":"UK303",
-        "airline":"Vistara",
-        "time":"8:00 PM",
-        "price":"₹7200"
-    }
-]
-
-
-previous = None
-
-
-# ====================================================
-# GENERATE PLAN TOOL
-# ====================================================
-
-@tool
-def generate_plan():
-
+def create_model():
     """
-    Generate flight plan
+    Creates and returns the ChatAnthropic model instance configured with the API key.
     """
-
-    selected = random.choice(
-        flights
+    return ChatAnthropic(
+        api_key=os.getenv("ANTHROPIC_API_KEY"),
+        model="claude-sonnet-5"
     )
 
-    state = load_state()
-
-    state[
-        "travel_plan"
-    ] = {
-
-        "source":
-        "Bangalore",
-
-        "destination":
-        "Delhi",
-
-        **selected
-    }
-
-    state[
-        "current_step"
-    ] = "PLAN_GENERATED"
-
-    save_state(
-        state
-    )
-
-    return selected
 
 # ====================================================
-# CONFIRM TICKET TOOL
+# CREATE DEEP AGENT
 # ====================================================
 
-@tool
-def confirm_ticket(
-
-    customer_name:str,
-    phone:str,
-    payment_confirmed:bool
-
-):
-
+def create_agent(model):
     """
-    Confirm booking
+    Instantiates the Deep Agent wrapping the language model, tools, and system prompt.
     """
-
-    state = load_state()
-
-
-    if not payment_confirmed:
-
-        return (
-            "Payment failed"
-        )
-
-
-    state[
-        "customer"
-    ] = {
-
-        "name":
-        customer_name,
-
-        "phone":
-        phone
-    }
-
-
-    state[
-        "payment_status"
-    ] = "PAID"
-
-
-    save_state(
-        state
-    )
-
-
-    FileService.create_external_records(
-        state
-    )
-
-
-    return (
-
-        "Booking confirmed "
-        "and files created"
-
-    )
-
-
-# ====================================================
-# MODEL
-# ====================================================
-
-model = ChatAnthropic(
-    api_key=os.getenv("ANTHROPIC_API_KEY"),
-    model=
-    "claude-sonnet-5"
-)
-
-
-# ====================================================
-# CREATE AGENT
-# ====================================================
-
-agent = create_deep_agent(
-
-    model=model,
-
-    tools=[
-
-        generate_plan,
-        confirm_ticket
-    ],
-
-    system_prompt="""
+    return create_deep_agent(
+        model=model,
+        tools=[
+            generate_plan,
+            confirm_ticket
+        ],
+        system_prompt="""
 
 You are a Flight Assistant.
 
@@ -282,91 +76,83 @@ then call:
 confirm_ticket()
 
 """
-)
+    )
 
 
 # ====================================================
-# AGENT FUNCTION
+# AGENT LOOP EXECUTION
 # ====================================================
 
-def run_agent():
+def run_agent(agent=None):
+    """
+    Runs the main agent interactive chat loop.
+    Supports injecting an agent, or automatically creates one if not provided.
+    """
+    if agent is None:
+        model = create_model()
+        agent = create_agent(model)
 
     conversation = []
 
     while True:
-
-        # Get user input
+        # Prompt user input
         query = input(
             "\nYou: "
         )
 
-
-        # Exit application
-        if query.lower() in [
-
-            "exit",
-            "quit"
-
-        ]:
-
+        # Handle loop exit signals
+        if query.lower() in ["exit", "quit"]:
             print(
                 "\nGoodbye!"
             )
-
             break
 
-
-        # Store user query
+        # Record user query
         conversation.append(
-
             {
-
-                "role":"user",
-                "content":query
-
+                "role": "user",
+                "content": query
             }
-
         )
 
-
-        # Send to agent
+        # Invoke the agent model with conversation context
         response = agent.invoke(
-
             {
-
-                "messages":
-                conversation
-
+                "messages": conversation
             }
-
         )
 
-
-        msg = response[
-            "messages"
-        ][-1]
-
+        # Extract the latest response from the agent
+        msg = response["messages"][-1]
 
         print(
             "\nAgent:\n"
         )
-
-
         print(
             msg.content
         )
 
-
-        # Store agent response
+        # Record agent response
         conversation.append(
-
             {
-
-                "role":"assistant",
-
-                "content":
-                msg.content
-
+                "role": "assistant",
+                "content": msg.content
             }
-
         )
+
+
+# ====================================================
+# ENTRY POINT ORCHESTRATION
+# ====================================================
+
+def main():
+    """
+    Main runner script instantiating all components and starting the agent loop.
+    """
+    model = create_model()
+    agent = create_agent(model)
+    run_agent(agent)
+
+
+if __name__ == "__main__":
+    main()

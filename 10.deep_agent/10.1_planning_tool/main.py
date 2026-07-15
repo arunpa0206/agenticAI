@@ -1,17 +1,14 @@
-from planningagent import run_agent
-
+from planningagent import main
 
 # ============================================================
 # APPLICATION START
 # ============================================================
-
 print("=" * 60)
 print("DEEP AI FLIGHT AGENT")
 print("=" * 60)
 
-
 # ============================================================
 # START AGENT
 # ============================================================
-
-run_agent()
+if __name__ == "__main__":
+    main()

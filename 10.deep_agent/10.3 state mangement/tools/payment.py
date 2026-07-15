@@ -1,4 +1,4 @@
-from state import (
+from .state import (
     load_state,
     save_state
 )

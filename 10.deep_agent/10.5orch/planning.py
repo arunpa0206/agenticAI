@@ -12,9 +12,9 @@ if not os.getenv("ANTHROPIC_API_KEY"):
 
 from langchain_anthropic import ChatAnthropic
 
-from search_worker import search_worker
-from booking_worker import booking_worker
-from notification_worker import notification_worker
+from tools.search_worker import search_worker
+from tools.booking_worker import booking_worker
+from tools.notification_worker import notification_worker
 
 
 # ============================================================

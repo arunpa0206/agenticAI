@@ -3,15 +3,15 @@
         "intent": "flight_search",
         "metrics": {
             "success_rate": {
-                "value": 100.0,
-                "status": "PASS"
+                "value": 60.0,
+                "status": "FAIL"
             },
             "tool_accuracy": {
-                "value": 100.0,
+                "value": 95.0,
                 "status": "PASS"
             },
             "average_steps": {
-                "value": 1.67,
+                "value": 1.95,
                 "status": "PASS"
             },
             "policy_compliance": {
@@ -24,19 +24,19 @@
         "intent": "flight_booking",
         "metrics": {
             "success_rate": {
-                "value": 85.71,
-                "status": "PASS"
+                "value": 75.0,
+                "status": "FAIL"
             },
             "tool_accuracy": {
-                "value": 90.48,
+                "value": 80.42,
                 "status": "PASS"
             },
             "average_steps": {
-                "value": 2.86,
+                "value": 2.58,
                 "status": "PASS"
             },
             "policy_compliance": {
-                "value": 100.0,
+                "value": 90.0,
                 "status": "PASS"
             }
         }

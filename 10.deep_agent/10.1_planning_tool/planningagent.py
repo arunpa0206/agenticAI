@@ -1,334 +1,131 @@
 import random
-import requests
-
-from langchain.tools import tool
-from deepagents import create_deep_agent
 import os
+import sys
 from dotenv import load_dotenv
 
+# Import LangChain tools and LangAnthropic models
+from langchain.tools import tool
+from deepagents import create_deep_agent
+from langchain_anthropic import ChatAnthropic
+
+# Load environment variables
 load_dotenv()
 if not os.getenv("ANTHROPIC_API_KEY"):
     raise ValueError("Required environment variable ANTHROPIC_API_KEY is missing. Please set it in your .env file.")
 
-from langchain_anthropic import ChatAnthropic
+
+# Import modularized tools from the tools sub-package
+from tools.search_flights import search_flights
+from tools.search_hotels import search_hotels
+from tools.book_flight import book_flight
+from tools.cancel_booking import cancel_booking
 
 
 # ============================================================
-# BOOKING API
+# MODEL & AGENT CREATION HELPERS
 # ============================================================
 
-BOOKING_API_URL = (
-    "https://jsonplaceholder.typicode.com/posts"
-)
-
-
-# ============================================================
-# FLIGHT OPTIONS
-# ============================================================
-
-flight_options = [
-
-    {
-        "flight_type": "Economy",
-        "travel_time": "2.5 Hours",
-        "price": "₹5,200"
-    },
-
-    {
-        "flight_type": "Business",
-        "travel_time": "2 Hours",
-        "price": "₹11,500"
-    },
-
-    {
-        "flight_type": "Premium Economy",
-        "travel_time": "2 Hours 20 Minutes",
-        "price": "₹7,800"
-    },
-
-    {
-        "flight_type": "Budget Saver",
-        "travel_time": "3 Hours",
-        "price": "₹4,100"
-    }
-
-]
-
-
-# ============================================================
-# PREVENT SAME FLIGHT TWICE
-# ============================================================
-
-previous_flight = None
-
-
-# ============================================================
-# TOOL → GENERATE FLIGHT
-# ============================================================
-
-@tool
-def generate_flight_option():
-
+def create_model():
     """
-    Generate flight option
-    without immediate repeats.
+    Instantiates the Claude Anthropic LLM model with the API key loaded from the environment.
     """
-
-    global previous_flight
-
-    available = [
-
-        flight
-
-        for flight in flight_options
-
-        if flight != previous_flight
-    ]
-
-    selected = random.choice(
-        available
+    return ChatAnthropic(
+        api_key=os.getenv("ANTHROPIC_API_KEY"),
+        model="claude-sonnet-5"
     )
 
-    previous_flight = selected
 
-    return f"""
-
-Flight Details
-
-Flight Type:
-{selected["flight_type"]}
-
-Travel Time:
-{selected["travel_time"]}
-
-Price:
-{selected["price"]}
-
-Would you like to proceed with
-this booking or would you like
-another flight option?
-
-"""
-
-
-# ============================================================
-# TOOL → BOOKING API
-# ============================================================
-
-@tool
-def create_booking(
-    from_city: str,
-    to_city: str
-):
-
+def create_agent(model):
     """
-    Create booking.
+    Creates and configures the Deep Agent instance with the tools and system prompts.
     """
-
-    payload = {
-
-        "from":
-        from_city,
-
-        "to":
-        to_city
-    }
-
-    response = requests.post(
-
-        BOOKING_API_URL,
-        json=payload
-    )
-
-    return response.json()
-
-
-# ============================================================
-# TOOL → FINAL BOOKING
-# ============================================================
-
-@tool
-def booking_agent(
-    from_city: str,
-    to_city: str,
-    flight_type: str
-):
-
-    """
-    Complete booking.
-    """
-
-    booking = create_booking.invoke({
-
-        "from_city":
-        from_city,
-
-        "to_city":
-        to_city
-    })
-
-    return f"""
-
-BOOKING CONFIRMED
-
-Route:
-{from_city} → {to_city}
-
-Flight Type:
-{flight_type}
-
-Booking ID:
-{booking.get("id")}
-
-Status:
-Confirmed
-
-"""
-
-
-# ============================================================
-# MODEL
-# ============================================================
-
-model = ChatAnthropic(
-    api_key=os.getenv("ANTHROPIC_API_KEY"),
-    model="claude-sonnet-5"
-)
-
-
-# ============================================================
-# CREATE DEEP AGENT
-# ============================================================
-
-agent = create_deep_agent(
-
-    model=model,
-
-    tools=[
-
-        generate_flight_option,
-        create_booking,
-        booking_agent
-    ],
-
-    system_prompt="""
-
-You are a Flight Deep Agent.
+    return create_deep_agent(
+        model=model,
+        tools=[
+            search_flights,
+            search_hotels,
+            book_flight,
+            cancel_booking
+        ],
+        system_prompt="""
+You are a Vacation Planning and Flight Deep Agent.
 
 Responsibilities:
+- Help users plan complete vacations by searching for flights (using search_flights) and searching for hotels (using search_hotels) at their destination.
+- Help users confirm/book flights using the book_flight tool.
+- Help users cancel bookings using the cancel_booking tool.
+- Integrate flight and hotel options to present a complete vacation package when asked to plan a trip/vacation.
+- Preserve context across conversation turns and follow up naturally.
 
-- Understand travel intent
-- Generate flight options
-- Preserve context across turns
-- Continue workflows naturally
-- Use tools only when needed
-- Continue existing workflows
-
-Do not show numbered menus.
-
-Do not restart workflows.
-
-Do not invent flight information.
-
-Use previous conversation context.
-
-If user asks:
-
-"show another option"
-
-call generate_flight_option()
-
-If user asks:
-
-"proceed"
-"book"
-"confirm"
-
-continue booking flow.
-
+Guidelines:
+- Do not show numbered menus.
+- Do not invent flight IDs, hotel details, or booking IDs; always call tools to generate them.
+- Present travel options and confirmation statuses clearly.
 """
-)
+    )
 
 
 # ============================================================
-# AGENT LOOP FUNCTION
+# RUN AGENT LOOP
 # ============================================================
 
-def run_agent():
+def run_agent(agent=None):
+    """
+    Executes the interactive chat loop with the agent, supporting backward compatibility
+    if called without arguments by creating its own model and agent.
+    """
+    if agent is None:
+        model = create_model()
+        agent = create_agent(model)
 
     conversation = []
 
     while True:
+        user_query = input("\nYou: ")
 
-        user_query = input(
-            "\nYou: "
-        )
-
-
-        if user_query.lower() in [
-
-            "exit",
-            "quit"
-
-        ]:
-
-            print(
-                "\nGoodbye!"
-            )
-
+        if user_query.lower() in {"exit", "quit"}:
+            print("\nGoodbye!")
             break
 
+        conversation.append({
+            "role": "user",
+            "content": user_query
+        })
 
-        conversation.append(
-
-            {
-
-                "role":
-                "user",
-
-                "content":
-                user_query
-
-            }
-
-        )
-
-
+        # Invoke the agent with the conversation history
         response = agent.invoke({
+            "messages": conversation
+        })
 
-            "messages":
-            conversation
+        final_message = response["messages"][-1]
 
+        print("\nAgent:")
+        print(final_message.content)
+
+        conversation.append({
+            "role": "assistant",
+            "content": final_message.content
         })
 
 
-        final_message = (
+# ============================================================
+# ENTRY POINT
+# ============================================================
 
-            response[
-                "messages"
-            ][-1]
-        )
+def main():
+    """
+    Main entry point function. Configures standard output console encoding to UTF-8
+    to prevent UnicodeEncodeError in Windows, builds the agent components, and starts the loop.
+    """
+    try:
+        sys.stdout.reconfigure(encoding='utf-8')
+    except AttributeError:
+        pass
+
+    model = create_model()
+    agent = create_agent(model)
+    run_agent(agent)
 
 
-        print(
-            "\nAgent:\n"
-        )
-
-        print(
-            final_message.content
-        )
-
-
-        conversation.append(
-
-            {
-
-                "role":
-                "assistant",
-
-                "content":
-                final_message.content
-
-            }
-
-        )
+if __name__ == "__main__":
+    main()

@@ -8,40 +8,37 @@ if not os.getenv("ANTHROPIC_API_KEY"):
 
 from langchain_anthropic import ChatAnthropic
 
-from search import search_flights
-from passenger_details import enter_passenger_details
-from seat_selection import select_seat
-from payment_confirmation import payment_confirmation
+from tools.search import search_flights
+from tools.passenger_details import enter_passenger_details
+from tools.seat_selection import select_seat
+from tools.payment_confirmation import payment_confirmation
 
 
 # ====================================================
 # MODEL
 # ====================================================
 
-model = ChatAnthropic(
-    api_key=os.getenv("ANTHROPIC_API_KEY"),
-    model="claude-sonnet-5"
-)
+def create_model():
+    return ChatAnthropic(
+        api_key=os.getenv("ANTHROPIC_API_KEY"),
+        model="claude-sonnet-5"
+    )
 
 
 # ====================================================
 # CREATE DEEP AGENT
 # ====================================================
 
-agent = create_deep_agent(
-
-    model=model,
-
-    tools=[
-
-        search_flights,
-        enter_passenger_details,
-        select_seat,
-        payment_confirmation
-
-    ],
-
-    system_prompt="""
+def create_agent(model):
+    return create_deep_agent(
+        model=model,
+        tools=[
+            search_flights,
+            enter_passenger_details,
+            select_seat,
+            payment_confirmation
+        ],
+        system_prompt="""
 
 You are a flight booking assistant.
 
@@ -65,69 +62,54 @@ Continue from previous state
 instead of restarting.
 
 """
-)
+    )
 
 
 # ====================================================
 # AGENT FUNCTION
 # ====================================================
 
-def run_agent():
+def run_agent(agent=None):
+    if agent is None:
+        model = create_model()
+        agent = create_agent(model)
 
     conversation = []
 
     while True:
-
         query = input(
             "\nYou: "
         )
 
-
         # Exit application
         if query.lower() in [
-
             "exit",
             "quit"
-
         ]:
-
             print(
                 "\nGoodbye!"
             )
-
             break
-
 
         # Store user message
         conversation.append(
-
             {
-
                 "role":"user",
                 "content":query
-
             }
-
         )
-
 
         # Send conversation to agent
         response = agent.invoke({
-
             "messages":
             conversation
-
         })
 
-
         final_message = (
-
             response[
                 "messages"
             ][-1]
-
         )
-
 
         print(
             "\nAgent:\n"
@@ -137,17 +119,17 @@ def run_agent():
             final_message.content
         )
 
-
         # Store assistant response
         conversation.append(
-
             {
-
                 "role":"assistant",
-
                 "content":
                 final_message.content
-
             }
-
         )
+
+
+def start_agent():
+    model = create_model()
+    agent = create_agent(model)
+    run_agent(agent)
