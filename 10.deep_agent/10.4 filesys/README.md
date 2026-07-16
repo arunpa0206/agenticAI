@@ -14,9 +14,27 @@ api_key="YOUR_API_KEY"
 with your own Anthropic API key.
 
 
-3. Run the project
+3. Activate Virtual Environment (PowerShell)
 
+Depending on your current working directory in the terminal, run:
+* **From the project root (`o:\training_arun`):**
+  ```powershell
+  .\agentenv\Scripts\Activate.ps1
+  ```
+* **From the `10.deep_agent` directory:**
+  ```powershell
+  ..\agentenv\Scripts\Activate.ps1
+  ```
+* **From this specific project directory:**
+  ```powershell
+  ..\..\agentenv\Scripts\Activate.ps1
+  ```
+
+4. Run the project
+
+```bash
 python main.py
+```
 
 ---
 

@@ -7,8 +7,8 @@
         "price": "₹4100"
     },
     "customer_details": {
-        "name": "Pooorab",
-        "phone": "1234"
+        "name": "Arun",
+        "phone": "123456789"
     },
     "payment_status": "PAID",
     "booking_status": "BOOKED"

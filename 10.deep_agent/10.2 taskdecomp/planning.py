@@ -115,9 +115,22 @@ def run_agent(agent=None):
             "\nAgent:\n"
         )
 
-        print(
-            final_message.content
-        )
+        content = final_message.content
+        if isinstance(content, list):
+            text_parts = []
+            for block in content:
+                if isinstance(block, dict):
+                    if block.get("type") == "text":
+                        text_parts.append(block.get("text", ""))
+                elif hasattr(block, "type") and getattr(block, "type") == "text":
+                    text_parts.append(getattr(block, "text", ""))
+                elif isinstance(block, str):
+                    text_parts.append(block)
+            output_text = "".join(text_parts)
+        else:
+            output_text = str(content)
+
+        print(output_text)
 
         # Store assistant response
         conversation.append(

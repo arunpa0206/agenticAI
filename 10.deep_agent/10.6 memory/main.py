@@ -1,4 +1,4 @@
-from planning import main
+from planning import start_agent
 
 
 # ============================================================
@@ -14,4 +14,4 @@ print("=" * 60)
 # START AGENT
 # ============================================================
 
-main()
+start_agent()

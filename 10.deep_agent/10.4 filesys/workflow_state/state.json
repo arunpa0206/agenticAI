@@ -3,14 +3,14 @@
     "travel_plan": {
         "source": "Bangalore",
         "destination": "Delhi",
-        "flight_id": "6E202",
-        "airline": "IndiGo",
-        "time": "2:15 PM",
-        "price": "\u20b94300"
+        "flight_id": "AI101",
+        "airline": "Air India",
+        "time": "10:30 AM",
+        "price": "\u20b95200"
     },
     "customer": {
-        "name": "John Doe",
-        "phone": "9876543210"
+        "name": "Arun",
+        "phone": "12345676"
     },
     "payment_status": "PAID"
 }

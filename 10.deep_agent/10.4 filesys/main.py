@@ -54,11 +54,11 @@
 # APPLICATION STARTUP ENTRYPOINT
 # ====================================================
 
-from planning import main
+from planning import start_agent
 
 
 # ====================================================
-# HEADER LOGGING
+# APPLICATION START
 # ====================================================
 
 print("=" * 70)
@@ -67,8 +67,8 @@ print("=" * 70)
 
 
 # ====================================================
-# EXECUTE APPLICATION
+# START AGENT
 # ====================================================
 
 if __name__ == "__main__":
-    main()
+    start_agent()

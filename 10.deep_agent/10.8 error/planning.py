@@ -182,7 +182,7 @@ config = {
 # AGENT FUNCTION
 # ============================================================
 
-def run_agent():
+def start_agent():
 
     while True:
 
@@ -237,11 +237,19 @@ def run_agent():
         )
 
 
-        print(
+        content = result["messages"][-1].content
+        if isinstance(content, list):
+            text_parts = []
+            for block in content:
+                if isinstance(block, dict):
+                    if block.get("type") == "text":
+                        text_parts.append(block.get("text", ""))
+                elif hasattr(block, "type") and getattr(block, "type") == "text":
+                    text_parts.append(getattr(block, "text", ""))
+                elif isinstance(block, str):
+                    text_parts.append(block)
+            output_text = "".join(text_parts)
+        else:
+            output_text = str(content)
 
-            result[
-                "messages"
-            ][-1]
-            .content
-
-        )
+        print(output_text)

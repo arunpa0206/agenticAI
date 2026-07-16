@@ -1,4 +1,5 @@
-from planningagent import main
+from planningagent import start_agent
+
 
 # ============================================================
 # APPLICATION START
@@ -11,4 +12,4 @@ print("=" * 60)
 # START AGENT
 # ============================================================
 if __name__ == "__main__":
-    main()
+    start_agent()

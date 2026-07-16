@@ -2,11 +2,11 @@ FLIGHT TICKET
 
 source: Bangalore
 destination: Delhi
-flight_id: 6E202
-airline: IndiGo
-time: 2:15 PM
-price: ₹4300
-name: poorab
-phone: 1234
+flight_id: AI101
+airline: Air India
+time: 10:30 AM
+price: ₹5200
+name: Arun
+phone: 12345676
 payment_status: PAID
 booking_status: CONFIRMED

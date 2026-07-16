@@ -1,121 +1,121 @@
 [
     {
-        "flight_id": "PB854",
+        "flight_id": "PB579",
         "type": "Premium Business Class",
-        "airline": "Vistara",
-        "price": "\u20b930323",
+        "airline": "Emirates",
+        "price": "\u20b927307",
         "flight_number": 1,
         "approval_status": "NOT_APPROVED"
     },
     {
-        "flight_id": "PB495",
+        "flight_id": "PB988",
         "type": "Premium Business Class",
-        "airline": "Air India",
-        "price": "\u20b918249",
+        "airline": "Vistara",
+        "price": "\u20b919269",
         "flight_number": 2,
         "approval_status": "NOT_APPROVED"
     },
     {
-        "flight_id": "PB731",
+        "flight_id": "PB264",
         "type": "Premium Business Class",
         "airline": "Vistara",
-        "price": "\u20b923180",
+        "price": "\u20b932922",
         "flight_number": 3,
         "approval_status": "NOT_APPROVED"
     },
     {
-        "flight_id": "PB599",
+        "flight_id": "PB441",
         "type": "Premium Business Class",
         "airline": "Vistara",
-        "price": "\u20b923982",
+        "price": "\u20b932251",
         "flight_number": 4,
         "approval_status": "NOT_APPROVED"
     },
     {
-        "flight_id": "PB155",
+        "flight_id": "PB382",
         "type": "Premium Business Class",
         "airline": "Emirates",
-        "price": "\u20b931113",
+        "price": "\u20b917465",
         "flight_number": 5,
         "approval_status": "NOT_APPROVED"
     },
     {
-        "flight_id": "CF545",
+        "flight_id": "CF333",
         "type": "Cheapest Flight",
-        "airline": "IndiGo",
-        "price": "\u20b94059",
+        "airline": "SpiceJet",
+        "price": "\u20b94124",
         "flight_number": 6,
         "approval_status": "NOT_APPROVED"
     },
     {
-        "flight_id": "CF434",
+        "flight_id": "CF709",
         "type": "Cheapest Flight",
         "airline": "Akasa Air",
-        "price": "\u20b93622",
+        "price": "\u20b93222",
         "flight_number": 7,
         "approval_status": "NOT_APPROVED"
     },
     {
-        "flight_id": "CF105",
+        "flight_id": "CF623",
+        "type": "Cheapest Flight",
+        "airline": "SpiceJet",
+        "price": "\u20b94892",
+        "flight_number": 8,
+        "approval_status": "APPROVED"
+    },
+    {
+        "flight_id": "CF754",
+        "type": "Cheapest Flight",
+        "airline": "SpiceJet",
+        "price": "\u20b94529",
+        "flight_number": 9,
+        "approval_status": "APPROVED"
+    },
+    {
+        "flight_id": "CF244",
         "type": "Cheapest Flight",
         "airline": "Akasa Air",
-        "price": "\u20b94466",
-        "flight_number": 8,
-        "approval_status": "NOT_APPROVED"
-    },
-    {
-        "flight_id": "CF328",
-        "type": "Cheapest Flight",
-        "airline": "SpiceJet",
-        "price": "\u20b93268",
-        "flight_number": 9,
-        "approval_status": "NOT_APPROVED"
-    },
-    {
-        "flight_id": "CF231",
-        "type": "Cheapest Flight",
-        "airline": "SpiceJet",
-        "price": "\u20b93447",
+        "price": "\u20b94817",
         "flight_number": 10,
-        "approval_status": "NOT_APPROVED"
+        "approval_status": "APPROVED"
     },
     {
-        "flight_id": "NS322",
+        "flight_id": "NS332",
         "type": "Non-Stop Reasonable Price",
-        "airline": "Vistara",
-        "price": "\u20b96922",
+        "airline": "Air India",
+        "price": "\u20b97843",
         "flight_number": 11,
         "approval_status": "NOT_APPROVED"
     },
     {
-        "flight_id": "NS212",
+        "flight_id": "NS453",
         "type": "Non-Stop Reasonable Price",
-        "airline": "Vistara",
-        "price": "\u20b911348",
+        "airline": "Air India",
+        "price": "\u20b96747",
         "flight_number": 12,
         "approval_status": "NOT_APPROVED"
     },
     {
-        "flight_id": "NS676",
+        "flight_id": "NS910",
         "type": "Non-Stop Reasonable Price",
-        "airline": "Vistara",
-        "price": "\u20b96151",
+        "airline": "Akasa Air",
+        "price": "\u20b911074",
         "flight_number": 13,
         "approval_status": "NOT_APPROVED"
     },
     {
-        "flight_id": "NS867",
+        "flight_id": "NS602",
         "type": "Non-Stop Reasonable Price",
-        "airline": "Air India",
-        "price": "\u20b97613",
+        "airline": "Akasa Air",
+        "price": "\u20b97499",
         "flight_number": 14,
         "approval_status": "NOT_APPROVED"
     },
     {
-        "flight_id": "NS157",
+        "flight_id": "NS645",
         "type": "Non-Stop Reasonable Price",
         "airline": "Air India",
-        "price": "\u20b98840",
+        "price": "\u20b911602",
         "flight_number": 15,
         "approval_status": "NOT_APPROVED"
     }

@@ -2,3 +2,5 @@ source,destination,flight_id,airline,time,price,name,phone,payment_status,bookin
 Bangalore,Delhi,AI101,Air India,10:30 AM,₹5200,p,123,PAID,CONFIRMED
 Bangalore,Delhi,UK303,Vistara,8:00 PM,₹7200,poorab,1234,PAID,CONFIRMED
 Bangalore,Delhi,6E202,IndiGo,2:15 PM,₹4300,John Doe,9876543210,PAID,CONFIRMED
+Bangalore,Delhi,6E202,IndiGo,2:15 PM,₹4300,poorab,1234,PAID,CONFIRMED
+Bangalore,Delhi,AI101,Air India,10:30 AM,₹5200,Arun,12345676,PAID,CONFIRMED

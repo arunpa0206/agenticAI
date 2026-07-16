@@ -122,7 +122,21 @@ def run_agent(agent=None):
                 config=config
             )
             print("\nAssistant:")
-            print(result["messages"][-1].content)
+            content = result["messages"][-1].content
+            if isinstance(content, list):
+                text_parts = []
+                for block in content:
+                    if isinstance(block, dict):
+                        if block.get("type") == "text":
+                            text_parts.append(block.get("text", ""))
+                    elif hasattr(block, "type") and getattr(block, "type") == "text":
+                        text_parts.append(getattr(block, "text", ""))
+                    elif isinstance(block, str):
+                        text_parts.append(block)
+                output_text = "".join(text_parts)
+            else:
+                output_text = str(content)
+            print(output_text)
         except Exception as e:
             print("\nError:", str(e))
 
@@ -131,14 +145,10 @@ def run_agent(agent=None):
 # ENTRY POINT ORCHESTRATION
 # ============================================================
 
-def main():
+def start_agent():
     """
     Main orchestration entry point.
     """
     model = create_model()
     agent = create_agent(model)
     run_agent(agent)
-
-
-if __name__ == "__main__":
-    main()

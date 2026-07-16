@@ -147,39 +147,13 @@ Please try again later.
 """
 
 
-    output = (
+    output = "\n### Approved Flight Options:\n\n"
+    output += "| Option | Flight ID | Airline | Type | Price |\n"
+    output += "|---|---|---|---|---|\n"
+    for idx, flight in enumerate(approved):
+        output += f"| {idx + 1} | {flight['flight_id']} | {flight['airline']} | {flight['type']} | {flight['price']} |\n"
 
-        "\nAPPROVED FLIGHTS\n"
-
-    )
-
-
-    for flight in approved:
-
-        output += f"""
-
-Flight ID:
-{flight["flight_id"]}
-
-Airline:
-{flight["airline"]}
-
-Type:
-{flight["type"]}
-
-Price:
-{flight["price"]}
-
-"""
-
-
-    output += """
-
-Do you want
-to proceed?
-
-"""
-
+    output += "\nWhich flight option do you want to proceed with? (Enter the option number or Flight ID)\n"
     return output
 
 
@@ -188,40 +162,60 @@ to proceed?
 # ============================================================
 
 @tool
-def process_booking():
-
+def process_booking(selection: str = ""):
     """
-    Process booking
+    Process booking by choosing the selected flight (by option number or flight ID).
     """
-
     approved = get_approved_flights()
 
     if len(approved) == 0:
         return "No approved flights found to book."
 
-    selected = approved[0]
+    selected = None
+    choice = selection.strip()
 
+    # Try to resolve choice from passed parameter first
+    if choice:
+        try:
+            val = int(choice) - 1
+            if 0 <= val < len(approved):
+                selected = approved[val]
+        except ValueError:
+            for flight in approved:
+                if flight['flight_id'].lower() == choice.lower():
+                    selected = flight
+                    break
 
-    payment = (
+        if not selected:
+            print(f"\nInvalid selection: '{selection}'")
 
-        payment_workflow(
-            selected
-        )
+    # Fallback to console prompt only if choice was invalid/missing
+    if not selected:
+        print("\nApproved flights:")
+        for idx, flight in enumerate(approved):
+            print(f"[{idx + 1}] {flight['flight_id']} - {flight['airline']} ({flight['type']}) at {flight['price']}")
 
-    )
+        while not selected:
+            choice = input("\nWhich flight do you want to proceed with? (Enter number or Flight ID): ").strip()
+            try:
+                val = int(choice) - 1
+                if 0 <= val < len(approved):
+                    selected = approved[val]
+                else:
+                    print("Invalid number. Please choose from the list.")
+            except ValueError:
+                # Check by flight ID
+                for flight in approved:
+                    if flight['flight_id'].lower() == choice.lower():
+                        selected = flight
+                        break
+                if not selected:
+                    print("Invalid input. Please enter the number or Flight ID.")
 
+    payment = payment_workflow(selected)
+    notification_workflow(selected, payment)
 
-    notification_workflow(
-
-        selected,
-        payment
-
-    )
-
-
-    return (
-        "Booking completed"
-    )
+    return f"Booking completed for flight {selected['flight_id']}"
 
 
 # ============================================================
@@ -279,23 +273,13 @@ call:
 
 approval_checkpoint()
 
-5. If approved flights exist:
+5. If approved flights exist, display them in the markdown table returned by the tool and ask:
 
-ask:
+"Which flight option do you want to proceed with?"
 
-Do you want to proceed?
+6. When the user specifies an option (e.g., Option number or Flight ID or selection details), call:
 
-6. If user says:
-
-proceed
-book
-confirm
-continue
-yes
-
-call:
-
-process_booking()
+process_booking(selection=<user selection>)
 
 7. If user says:
 
@@ -327,7 +311,7 @@ Please try again later.
 # AGENT FUNCTION
 # ============================================================
 
-def run_agent():
+def start_agent():
 
     conversation = []
 
@@ -396,9 +380,22 @@ def run_agent():
             "\nAgent:\n"
         )
 
-        print(
-            msg.content
-        )
+        content = msg.content
+        if isinstance(content, list):
+            text_parts = []
+            for block in content:
+                if isinstance(block, dict):
+                    if block.get("type") == "text":
+                        text_parts.append(block.get("text", ""))
+                elif hasattr(block, "type") and getattr(block, "type") == "text":
+                    text_parts.append(getattr(block, "text", ""))
+                elif isinstance(block, str):
+                    text_parts.append(block)
+            output_text = "".join(text_parts)
+        else:
+            output_text = str(content)
+
+        print(output_text)
 
 
         # Store assistant reply

@@ -128,9 +128,22 @@ def run_agent(agent=None):
         print(
             "\nAgent:\n"
         )
-        print(
-            msg.content
-        )
+        content = msg.content
+        if isinstance(content, list):
+            text_parts = []
+            for block in content:
+                if isinstance(block, dict):
+                    if block.get("type") == "text":
+                        text_parts.append(block.get("text", ""))
+                elif hasattr(block, "type") and getattr(block, "type") == "text":
+                    text_parts.append(getattr(block, "text", ""))
+                elif isinstance(block, str):
+                    text_parts.append(block)
+            output_text = "".join(text_parts)
+        else:
+            output_text = str(content)
+
+        print(output_text)
 
         # Record agent response
         conversation.append(
@@ -145,14 +158,10 @@ def run_agent(agent=None):
 # ENTRY POINT ORCHESTRATION
 # ====================================================
 
-def main():
+def start_agent():
     """
     Main runner script instantiating all components and starting the agent loop.
     """
     model = create_model()
     agent = create_agent(model)
     run_agent(agent)
-
-
-if __name__ == "__main__":
-    main()

@@ -100,7 +100,22 @@ def run_agent(agent=None):
         final_message = response["messages"][-1]
 
         print("\nAgent:")
-        print(final_message.content)
+        content = final_message.content
+        if isinstance(content, list):
+            text_parts = []
+            for block in content:
+                if isinstance(block, dict):
+                    if block.get("type") == "text":
+                        text_parts.append(block.get("text", ""))
+                elif hasattr(block, "type") and getattr(block, "type") == "text":
+                    text_parts.append(getattr(block, "text", ""))
+                elif isinstance(block, str):
+                    text_parts.append(block)
+            output_text = "".join(text_parts)
+        else:
+            output_text = str(content)
+
+        print(output_text)
 
         conversation.append({
             "role": "assistant",
@@ -112,7 +127,7 @@ def run_agent(agent=None):
 # ENTRY POINT
 # ============================================================
 
-def main():
+def start_agent():
     """
     Main entry point function. Configures standard output console encoding to UTF-8
     to prevent UnicodeEncodeError in Windows, builds the agent components, and starts the loop.
@@ -125,7 +140,3 @@ def main():
     model = create_model()
     agent = create_agent(model)
     run_agent(agent)
-
-
-if __name__ == "__main__":
-    main()

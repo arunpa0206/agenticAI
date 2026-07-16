@@ -1,0 +1,12 @@
+{
+    "source": "Bangalore",
+    "destination": "Delhi",
+    "flight_id": "AI101",
+    "airline": "Air India",
+    "time": "10:30 AM",
+    "price": "\u20b95200",
+    "name": "Arun",
+    "phone": "12345676",
+    "payment_status": "PAID",
+    "booking_status": "CONFIRMED"
+}
